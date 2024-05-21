@@ -1,13 +1,20 @@
+package publications;
 
-public class Publication{
+import enums.PageSize;
+import enums.PaperType;
+
+public class Publications{
     private String title;
     private int numberOfPages;
     private PageSize pageSize;
 
-    public Publication(String title, int numberOfPages, PageSize pageSize){
+    private PaperType paperType;
+
+    public Publications(String title, int numberOfPages, PageSize pageSize, PaperType paperType){
         this.title = title;
         this.numberOfPages = numberOfPages;
         this.pageSize = pageSize;
+        this.paperType = paperType;
     }
 
     public String getTitle(){
@@ -30,6 +37,14 @@ public class Publication{
 
     public void setPageSize(PageSize pageSize){
         this.pageSize = pageSize;
+    }
+
+    public PaperType getPaperType() {
+        return paperType;
+    }
+
+    public void setPaperType(PaperType paperType) {
+        this.paperType = paperType;
     }
 }
 

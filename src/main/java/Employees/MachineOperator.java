@@ -1,7 +1,9 @@
-public class Operator implements Employee {
+package employees;
+
+public class MachineOperator implements Employee {
     private double baseSalary;
 
-    public Operator(double baseSalary) {
+    public MachineOperator(double baseSalary) {
         this.baseSalary = baseSalary;
     }
 

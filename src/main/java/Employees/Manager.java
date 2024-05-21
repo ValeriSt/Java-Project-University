@@ -1,3 +1,5 @@
+package employees;
+
 public class Manager implements Employee {
     private double baseSalary;
     private double revenue;

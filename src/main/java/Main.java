@@ -1,11 +1,18 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.*;
+
+import employees.Employee;
+import employees.MachineOperator;
+import enums.PageSize;
+import enums.PaperType;
+import printing.PrintingPress;
+import employees.Manager;
+import publications.Publications;
 
 public class Main {
 public static void main(String[] args) {
     // Create some employees
-    Operator operator = new Operator(2000.0);
+    MachineOperator operator = new MachineOperator(2000.0);
     Manager manager = new Manager(3000.0, 50000.0, 40000.0);
 
     // Create a list of employees and add the employees to it
@@ -14,11 +21,11 @@ public static void main(String[] args) {
     employees.add(manager);
 
     // Create some publications
-    Publication book = new Publication("Book", 100, PageSize.A4, PaperType.NORMAL);
-    Publication poster = new Publication("Poster", 50, PageSize.A1, PaperType.GLOSSY);
+    Publications book = new Publications("Book", 100, PageSize.A4, PaperType.NORMAL);
+    Publications poster = new Publications("Poster", 50, PageSize.A1, PaperType.GLOSSY);
 
     // Create a list of publications and add the publications to it
-    List<Publication> publications = new ArrayList<>();
+    List<Publications> publications = new ArrayList<>();
     publications.add(book);
     publications.add(poster);
 

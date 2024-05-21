@@ -1,3 +1,5 @@
+package enums;
+
 public enum PageSize {
     A1,
     A2,

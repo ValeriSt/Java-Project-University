@@ -1,8 +1,19 @@
+package printing;
+
+import employees.Employee;
+import enums.PageSize;
+import enums.PaperType;
+import publications.Publications;
+
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
 public class PrintingPress implements PrintCostCalculator{
     private List<Employee> employees;
     private Map<PaperType, Double> basePrices;
     private Map<PageSize, Double> sizeMultipliers;
-    private List<Publication> publications;
+    private List<Publications> publications;
 
     public PrintingPress() {
         basePrices = new HashMap<>();
@@ -45,16 +56,25 @@ public class PrintingPress implements PrintCostCalculator{
 
     public double calculateTotalPaperCosts() {
         double totalPaperCosts = 0.0;
-        for (Publication publication : publications) {
+        for (Publications publication : publications) {
             totalPaperCosts += calculatePrintingCost(publication, publication.getPaperType());
         }
         return totalPaperCosts;
     }
-}
 
     @Override
-    public double calculatePrintingCost(Publication publication, PaperType paperType) {
+    public double calculatePrintingCost(Publications publication, PaperType paperType) {
         double basePrice = basePrices.get(paperType);
         double sizeMultiplier = sizeMultipliers.get(publication.getPageSize());
         return publication.getNumberOfPages() * basePrice * sizeMultiplier;
     }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public void setPublications(List<Publications> publications) {
+        this.publications = publications;
+    }
+}
+
