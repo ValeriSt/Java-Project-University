@@ -1,19 +1,23 @@
 package printing;
 
-import employees.Employee;
+import interfaces.Employee;
 import enums.PageSize;
 import enums.PaperType;
+import interfaces.PrintCostCalculator;
 import publications.Publications;
 
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PrintingPress implements PrintCostCalculator{
+public class PrintingPress implements PrintCostCalculator {
     private List<Employee> employees;
     private Map<PaperType, Double> basePrices;
     private Map<PageSize, Double> sizeMultipliers;
     private List<Publications> publications;
+
+    private int discountThreshold;
+    private double discountRate;
 
     public PrintingPress() {
         basePrices = new HashMap<>();
@@ -27,6 +31,14 @@ public class PrintingPress implements PrintCostCalculator{
         sizeMultipliers.put(PageSize.A3, 0.6);
         sizeMultipliers.put(PageSize.A4, 0.4);
         sizeMultipliers.put(PageSize.A5, 0.2);
+
+        discountThreshold = 1000;
+        discountRate = 0.1;
+    }
+
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 
     public Map<PaperType, Double> getBasePrices() {
@@ -44,6 +56,27 @@ public class PrintingPress implements PrintCostCalculator{
     public void setSizeMultipliers(Map<PageSize, Double> sizeMultipliers) {
         this.sizeMultipliers = sizeMultipliers;
     }
+
+    public void setPublications(List<Publications> publications) {
+        this.publications = publications;
+    }
+
+    public int getDiscountThreshold() {
+        return discountThreshold;
+    }
+
+    public void setDiscountThreshold(int discountThreshold) {
+        this.discountThreshold = discountThreshold;
+    }
+
+    public double getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(double discountRate) {
+        this.discountRate = discountRate;
+    }
+
 
 
     public double calculateTotalSalaryCosts() {
@@ -66,15 +99,14 @@ public class PrintingPress implements PrintCostCalculator{
     public double calculatePrintingCost(Publications publication, PaperType paperType) {
         double basePrice = basePrices.get(paperType);
         double sizeMultiplier = sizeMultipliers.get(publication.getPageSize());
-        return publication.getNumberOfPages() * basePrice * sizeMultiplier;
+        double cost =  publication.getNumberOfPages() * basePrice * sizeMultiplier;
+
+        if (publication.getNumberOfPages() > discountThreshold) {
+            cost -= cost * discountRate;
+        }
+
+        return cost;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
-
-    public void setPublications(List<Publications> publications) {
-        this.publications = publications;
-    }
 }
 

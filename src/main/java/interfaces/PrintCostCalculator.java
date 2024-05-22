@@ -1,4 +1,4 @@
-package printing;
+package interfaces;
 import enums.PaperType;
 import publications.Publications;
 

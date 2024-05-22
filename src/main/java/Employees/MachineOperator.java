@@ -1,5 +1,7 @@
 package employees;
 
+import interfaces.Employee;
+
 public class MachineOperator implements Employee {
     private double baseSalary;
 

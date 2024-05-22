@@ -1,13 +1,13 @@
-import java.util.ArrayList;
-import java.util.List;
-
-import employees.Employee;
+import interfaces.Employee;
 import employees.MachineOperator;
 import enums.PageSize;
 import enums.PaperType;
 import printing.PrintingPress;
 import employees.Manager;
 import publications.Publications;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 public static void main(String[] args) {

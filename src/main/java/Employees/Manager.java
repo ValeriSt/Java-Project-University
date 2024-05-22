@@ -1,5 +1,7 @@
 package employees;
 
+import interfaces.Employee;
+
 public class Manager implements Employee {
     private double baseSalary;
     private double revenue;
