@@ -10,11 +10,15 @@ public class Publications{
 
     private PaperType paperType;
 
-    public Publications(String title, int numberOfPages, PageSize pageSize, PaperType paperType){
+    private boolean color;
+
+    public Publications(String title, int numberOfPages, PageSize pageSize, PaperType paperType, boolean color){
         this.title = title;
         this.numberOfPages = numberOfPages;
         this.pageSize = pageSize;
         this.paperType = paperType;
+        this.color = color;
+
     }
 
     public String getTitle(){
@@ -45,6 +49,14 @@ public class Publications{
 
     public void setPaperType(PaperType paperType) {
         this.paperType = paperType;
+    }
+
+    public boolean isColor(){
+        return color;
+    }
+
+    public void setColor(boolean color){
+        this.color = color;
     }
 }
 
