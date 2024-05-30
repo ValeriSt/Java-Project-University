@@ -1,6 +1,8 @@
 package printing;
 import enums.PrintingMode;
 import publications.Publications;
+
+import javax.print.PrintException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,13 +29,13 @@ public class PrintingMachine {
         currentPaperLoad += paperAmount;
     }
 
-    public void printPublication(Publications publication, int copies, PrintingMode mode) {
+    public void printPublication(Publications publication, int copies, PrintingMode mode) throws PrintException {
         if (!supportsColorPrinting && mode == PrintingMode.COLOR) {
-            throw new IllegalArgumentException("This machine cannot print in color.");
+            throw new PrintException("This machine cannot print in color.");
         }
         int pagesNeeded = publication.getNumberOfPages() * copies;
         if (pagesNeeded > currentPaperLoad) {
-            throw new IllegalArgumentException("Not enough paper loaded to print this publication.");
+            throw new PrintException("Not enough paper loaded to print this publication.");
         }
         currentPaperLoad -= pagesNeeded;
         printedPages += pagesNeeded;
@@ -44,7 +46,16 @@ public class PrintingMachine {
         return printedPages;
     }
 
+    public Map<String, Integer> getPrintedPublications() {
+        return printedPublications;
+    }
+
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Machine ID: " + name + ", Max Paper: " + maxPaperLoad + ", Supports Color: " + supportsColorPrinting + ", Printed Pages: " + printedPages;
     }
 }
