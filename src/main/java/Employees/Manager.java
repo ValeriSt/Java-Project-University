@@ -1,48 +1,23 @@
 package employees;
 
-import interfaces.Employee;
+public class Manager extends Employee {
+    private final double bonusThreshold;
 
-public class Manager implements Employee {
-    private double baseSalary;
-    private double revenue;
-    private double bonusThreshold;
+    private final double bonusRate;
 
-    public Manager(double baseSalary, double revenue, double bonusThreshold) {
-        this.baseSalary = baseSalary;
-        this.revenue = revenue;
+    public Manager(String name, double baseSalary, double bonusThreshold, double bonusRate) {
+        super(name, baseSalary);
         this.bonusThreshold = bonusThreshold;
+        this.bonusRate = bonusRate;
     }
 
-    public double getBaseSalary() {
-        return baseSalary;
-    }
-
-    public void setRevenue(double revenue) {
-        this.revenue = revenue;
-    }
-
-    public void setBaseSalary(double baseSalary) {
-        this.baseSalary = baseSalary;
-    }
-
-    public void setBonusThreshold(double bonusThreshold) {
-        this.bonusThreshold = bonusThreshold;
-    }
-
-    public double getRevenue() {
-        return revenue;
-    }
-
-    public double getBonusThreshold() {
-        return bonusThreshold;
-    }
 
     @Override
-    public double calculateSalary() {
-        return baseSalary + calculateBonus();
-    }
-
-    private double calculateBonus() {
-        return revenue > bonusThreshold ? baseSalary * 0.1 : 0;
+    public double getSalary(double revenue) {
+        if (revenue > bonusThreshold) {
+            return baseSalary + (1.0 + bonusRate);
+        } else {
+            return baseSalary;
+        }
     }
 }

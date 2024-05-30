@@ -1,21 +1,23 @@
 package printing;
+import enums.PrintingMode;
 import publications.Publications;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PrintingMachine {
+    private final String name;
     private final int maxPaperLoad;
-    private int currentPaperLoad;
-    private int pagesPerMinute;
-    private final boolean colorPrinting;
-    private final Map<Publications, Integer> printedPublications;
+    private int currentPaperLoad = 0;
 
-    public PrintingMachine(int maxPaperLoad, int pagesPerMinute, boolean colorPrinting) {
+    private int printedPages = 0;
+    private final boolean supportsColorPrinting;
+    private final Map<String, Integer> printedPublications = new HashMap<>();
+
+
+    public PrintingMachine(String name, int maxPaperLoad, boolean supportsColorPrinting) {
+        this.name = name;
         this.maxPaperLoad = maxPaperLoad;
-        this.pagesPerMinute = pagesPerMinute;
-        this.colorPrinting = colorPrinting;
-        this.currentPaperLoad = 0;
-        this.printedPublications = new HashMap<>();
+        this.supportsColorPrinting = supportsColorPrinting;
     }
 
     public void loadPaper(int paperAmount) {
@@ -25,8 +27,8 @@ public class PrintingMachine {
         currentPaperLoad += paperAmount;
     }
 
-    public void printPublication(Publications publication, int copies) {
-        if (!colorPrinting && publication.isColor()) {
+    public void printPublication(Publications publication, int copies, PrintingMode mode) {
+        if (!supportsColorPrinting && mode == PrintingMode.COLOR) {
             throw new IllegalArgumentException("This machine cannot print in color.");
         }
         int pagesNeeded = publication.getNumberOfPages() * copies;
@@ -34,20 +36,15 @@ public class PrintingMachine {
             throw new IllegalArgumentException("Not enough paper loaded to print this publication.");
         }
         currentPaperLoad -= pagesNeeded;
-        printedPublications.put(publication, printedPublications.getOrDefault(publication, 0) + copies);
+        printedPages += pagesNeeded;
+        printedPublications.put(publication.getTitle(), printedPublications.getOrDefault(publication.getTitle(), 0) + copies);
     }
 
     public int getPrintedPages() {
-        return printedPublications.entrySet().stream()
-                .mapToInt(entry -> entry.getKey().getNumberOfPages() * entry.getValue())
-                .sum();
+        return printedPages;
     }
 
-    public int getPagesPerMinute() {
-        return pagesPerMinute;
-    }
-
-    public void setPagesPerMinute(int pagesPerMinute) {
-        this.pagesPerMinute = pagesPerMinute;
+    public String getName() {
+        return name;
     }
 }

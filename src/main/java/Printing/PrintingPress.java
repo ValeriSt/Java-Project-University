@@ -1,111 +1,67 @@
 package printing;
 
-import interfaces.Employee;
-import enums.PageSize;
-import enums.PaperType;
-import interfaces.PrintCostCalculator;
+import employees.Employee;
 import publications.Publications;
 
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 
-public class PrintingPress implements PrintCostCalculator {
-    private List<Employee> employees;
-    private Map<PaperType, Double> basePrices;
-    private Map<PageSize, Double> sizeMultipliers;
-    private List<Publications> publications;
+import javax.print.PrintException;
+import java.io.*;
+import java.util.*;
 
-    private int discountThreshold;
-    private double discountRate;
+public class PrintingPress {
+    private final List<Employee> employees = new ArrayList<>();
+    private final List<PrintingMachine> printingMachines = new ArrayList<>();
+    private final double discountThreshold;
+    private final double discountRate;
 
-    public PrintingPress() {
-        basePrices = new HashMap<>();
-        basePrices.put(PaperType.NORMAL, 1.0);
-        basePrices.put(PaperType.GLOSSY, 1.5);
-        basePrices.put(PaperType.NEWSPAPER, 0.8);
+    private double totalRevenue = 0.0;
+    private double totalCosts = 0.0;
 
-        sizeMultipliers = new HashMap<>();
-        sizeMultipliers.put(PageSize.A1, 1.0);
-        sizeMultipliers.put(PageSize.A2, 0.8);
-        sizeMultipliers.put(PageSize.A3, 0.6);
-        sizeMultipliers.put(PageSize.A4, 0.4);
-        sizeMultipliers.put(PageSize.A5, 0.2);
-
-        discountThreshold = 1000;
-        discountRate = 0.1;
-    }
-
-
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
-
-    public Map<PaperType, Double> getBasePrices() {
-        return basePrices;
-    }
-
-    public void setBasePrices(Map<PaperType, Double> basePrices) {
-        this.basePrices = basePrices;
-    }
-
-    public Map<PageSize, Double> getSizeMultipliers() {
-        return sizeMultipliers;
-    }
-
-    public void setSizeMultipliers(Map<PageSize, Double> sizeMultipliers) {
-        this.sizeMultipliers = sizeMultipliers;
-    }
-
-    public void setPublications(List<Publications> publications) {
-        this.publications = publications;
-    }
-
-    public int getDiscountThreshold() {
-        return discountThreshold;
-    }
-
-    public void setDiscountThreshold(int discountThreshold) {
+    public PrintingPress(double discountThreshold, double discountRate) {
         this.discountThreshold = discountThreshold;
-    }
-
-    public double getDiscountRate() {
-        return discountRate;
-    }
-
-    public void setDiscountRate(double discountRate) {
         this.discountRate = discountRate;
     }
 
-
-
-    public double calculateTotalSalaryCosts() {
-        double totalSalaryCosts = 0.0;
-        for (Employee employee : employees) {
-            totalSalaryCosts += employee.calculateSalary();
-        }
-        return totalSalaryCosts;
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
     }
 
-    public double calculateTotalPaperCosts() {
-        double totalPaperCosts = 0.0;
-        for (Publications publication : publications) {
-            totalPaperCosts += calculatePrintingCost(publication, publication.getPaperType());
-        }
-        return totalPaperCosts;
+    public void addPrintingMachine(PrintingMachine machine) {
+        printingMachines.add(machine);
     }
 
-    @Override
-    public double calculatePrintingCost(Publications publication, PaperType paperType) {
-        double basePrice = basePrices.get(paperType);
-        double sizeMultiplier = sizeMultipliers.get(publication.getPageSize());
-        double cost =  publication.getNumberOfPages() * basePrice * sizeMultiplier;
+    public void addPublication(Publications publication, int copies) {
 
-        if (publication.getNumberOfPages() > discountThreshold) {
-            cost -= cost * discountRate;
+        double cost = publication.getCost() * copies;
+        totalCosts += cost;
+        double discount = 0;
+        if (copies > discountThreshold) {
+            discount = cost * discountRate;
         }
+        totalRevenue += (cost - discount);
+        totalCosts += cost;
 
-        return cost;
+    }
+
+    public double getTotalRevenue() {
+        return totalRevenue;
+    }
+
+    public double getTotalCosts() {
+        return totalCosts;
+    }
+
+    public void saveToFile(String filename) throws PrintException {
+        try (PrintWriter outFile = new PrintWriter(new FileWriter(filename))) {
+            outFile.printf("Total Revenue: $%.2f%n", totalRevenue);
+            outFile.printf("Total Costs: $%.2f%n", totalCosts);
+            outFile.println("Employees:");
+            for (Employee emp : employees) {
+                outFile.printf("%s - $%.2f%n", emp.getName(), emp.getSalary(totalRevenue));
+            }
+        } catch (IOException e) {
+            throw new PrintException("Error writing to file: " + e.getMessage());
+        }
     }
 
 }

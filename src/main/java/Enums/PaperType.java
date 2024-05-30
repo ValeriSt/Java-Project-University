@@ -1,7 +1,7 @@
 package enums;
 
 public enum PaperType {
-    NORMAL,
+    REGULAR,
     GLOSSY,
     NEWSPAPER
 }

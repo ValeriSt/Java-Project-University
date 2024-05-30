@@ -3,60 +3,49 @@ package publications;
 import enums.PageSize;
 import enums.PaperType;
 
+import java.util.Map;
+
 public class Publications{
-    private String title;
-    private int numberOfPages;
-    private PageSize pageSize;
+    private final String title;
+    private final int numberOfPages;
+    private final PageSize pageSize;
 
-    private PaperType paperType;
+    private final PaperType paperType;
 
-    private boolean color;
-
-    public Publications(String title, int numberOfPages, PageSize pageSize, PaperType paperType, boolean color){
+    public Publications(String title, int numberOfPages, PageSize pageSize, PaperType paperType){
         this.title = title;
         this.numberOfPages = numberOfPages;
         this.pageSize = pageSize;
         this.paperType = paperType;
-        this.color = color;
-
     }
+
+    private static final Map<PageSize, Double> sizeMultiplier = Map.of(
+            PageSize.A5, 0.2,
+            PageSize.A4, 0.4,
+            PageSize.A3, 0.6,
+            PageSize.A2, 0.8,
+            PageSize.A1, 1.0
+    );
+
+    private static final Map<PaperType, Double> basePrices = Map.of(
+            PaperType.REGULAR, 1.0,
+            PaperType.GLOSSY, 1.5,
+            PaperType.NEWSPAPER, 0.8
+    );
+
+    public double getCost() {
+        return numberOfPages * sizeMultiplier.get(pageSize) * basePrices.get(paperType);
+    }
+
 
     public String getTitle(){
         return title;
     }
 
-    public void setTitle(String title){
-        this.title = title;
-    }
     public int getNumberOfPages(){
         return numberOfPages;
     }
-    public void setNumberOfPages(int numberOfPages){
-        this.numberOfPages = numberOfPages;
-    }
 
-    public PageSize getPageSize(){
-        return pageSize;
-    }
 
-    public void setPageSize(PageSize pageSize){
-        this.pageSize = pageSize;
-    }
-
-    public PaperType getPaperType() {
-        return paperType;
-    }
-
-    public void setPaperType(PaperType paperType) {
-        this.paperType = paperType;
-    }
-
-    public boolean isColor(){
-        return color;
-    }
-
-    public void setColor(boolean color){
-        this.color = color;
-    }
 }
 

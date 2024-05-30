@@ -1,45 +1,37 @@
-import interfaces.Employee;
 import employees.MachineOperator;
+import employees.Manager;
 import enums.PageSize;
 import enums.PaperType;
+import enums.PrintingMode;
 import printing.PrintingPress;
-import employees.Manager;
+import printing.PrintingMachine;
 import publications.Publications;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.print.PrintException;
 
 public class Main {
-public static void main(String[] args) {
-    // Create some employees
-    MachineOperator operator = new MachineOperator(2000.0);
-    Manager manager = new Manager(3000.0, 50000.0, 40000.0);
+    public static void main(String[] args) {
+        // Create some employees
+        try {
+            PrintingPress press = new PrintingPress(1000, 0.1);
+            press.addEmployee(new MachineOperator("John Doe", 1000));
+            press.addEmployee(new Manager("Jane Smith", 1500, 5000, 0.2));
 
-    // Create a list of employees and add the employees to it
-    List<Employee> employees = new ArrayList<>();
-    employees.add(operator);
-    employees.add(manager);
+            PrintingMachine machine1 = new PrintingMachine("M1", 1000, true);
+            PrintingMachine machine2 = new PrintingMachine("M2", 500, false);
+            press.addPrintingMachine(machine1);
+            press.addPrintingMachine(machine2);
 
-    // Create some publications
-    Publications book = new Publications("Book", 100, PageSize.A4, PaperType.NORMAL);
-    Publications poster = new Publications("Poster", 50, PageSize.A1, PaperType.GLOSSY);
+            Publications book = new Publications("C++ Programming", 300, PageSize.A4, PaperType.REGULAR);
+            press.addPublication(book, 10);
 
-    // Create a list of publications and add the publications to it
-    List<Publications> publications = new ArrayList<>();
-    publications.add(book);
-    publications.add(poster);
+            machine1.loadPaper(1000);
+            machine1.printPublication(book, 10, PrintingMode.COLOR);
 
-    // Create a printing press with the employees and publications
-    PrintingPress printingPress = new PrintingPress();
-    printingPress.setEmployees(employees);
-    printingPress.setPublications(publications);
+            press.saveToFile("report.txt");
+        } catch (PrintException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
 
-    // Calculate and print the total salary costs
-    double totalSalaryCosts = printingPress.calculateTotalSalaryCosts();
-    System.out.println("Total salary costs: " + totalSalaryCosts);
-
-    // Calculate and print the total paper costs
-    double totalPaperCosts = printingPress.calculateTotalPaperCosts();
-    System.out.println("Total paper costs: " + totalPaperCosts);
-}
+    }
 }
