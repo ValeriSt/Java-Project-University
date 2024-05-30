@@ -1,20 +1,8 @@
 package employees;
 
-import interfaces.Employee;
-
-public class MachineOperator implements Employee {
-    private double baseSalary;
-
+public class MachineOperator extends BaseEmployee {
     public MachineOperator(double baseSalary) {
-        this.baseSalary = baseSalary;
-    }
-
-    public double getBaseSalary() {
-        return baseSalary;
-    }
-
-    public void setBaseSalary(double baseSalary) {
-        this.baseSalary = baseSalary;
+        super(baseSalary);
     }
 
     @Override

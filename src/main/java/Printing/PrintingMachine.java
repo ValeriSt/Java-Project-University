@@ -26,7 +26,7 @@ public class PrintingMachine {
     }
 
     public void printPublication(Publications publication, int copies) {
-        if (!colorPrinting && publication.isColor()) {
+        if (!colorPrinting && publication.isColor().equals( "Black/White") ){
             throw new IllegalArgumentException("This machine cannot print in color.");
         }
         int pagesNeeded = publication.getNumberOfPages() * copies;

@@ -1,45 +1,32 @@
-import interfaces.Employee;
-import employees.MachineOperator;
+import java.util.Arrays;
+import java.util.List;
 import enums.PageSize;
 import enums.PaperType;
-import printing.PrintingPress;
-import employees.Manager;
 import publications.Publications;
-
-import java.util.ArrayList;
-import java.util.List;
+import printing.PrintingPress;
 
 public class Main {
-public static void main(String[] args) {
-    // Create some employees
-    MachineOperator operator = new MachineOperator(2000.0);
-    Manager manager = new Manager(3000.0, 50000.0, 40000.0);
+    public static void main(String[] args) {
+        // Create a PrintingPress object
+        PrintingPress printingPress = new PrintingPress();
 
-    // Create a list of employees and add the employees to it
-    List<Employee> employees = new ArrayList<>();
-    employees.add(operator);
-    employees.add(manager);
+        Publications publication1 = new Publications("Book1", 100, PageSize.A4, PaperType.GLOSSY, "Color", 10, 100);
+        publication1.setNumberOfCopies(500);
+        publication1.setPricePerCopy(10.0);
 
-    // Create some publications
-    Publications book = new Publications("Book", 100, PageSize.A4, PaperType.NORMAL);
-    Publications poster = new Publications("Poster", 50, PageSize.A1, PaperType.GLOSSY);
+        Publications publication2 = new Publications("Book2", 200, PageSize.A3, PaperType.NORMAL, "Black/White", 5, 200);
+        publication2.setNumberOfCopies(300);
+        publication2.setPricePerCopy(15.0);
 
-    // Create a list of publications and add the publications to it
-    List<Publications> publications = new ArrayList<>();
-    publications.add(book);
-    publications.add(poster);
+        List<Publications> publications = Arrays.asList(publication1, publication2);
 
-    // Create a printing press with the employees and publications
-    PrintingPress printingPress = new PrintingPress();
-    printingPress.setEmployees(employees);
-    printingPress.setPublications(publications);
+        // Set the list of publications to the PrintingPress object
+        printingPress.setPublications(publications);
 
-    // Calculate and print the total salary costs
-    double totalSalaryCosts = printingPress.calculateTotalSalaryCosts();
-    System.out.println("Total salary costs: " + totalSalaryCosts);
+        // Write data to file
+        printingPress.writeDataToFile("output.txt");
 
-    // Calculate and print the total paper costs
-    double totalPaperCosts = printingPress.calculateTotalPaperCosts();
-    System.out.println("Total paper costs: " + totalPaperCosts);
-}
+        // Read data from file
+        printingPress.readDataFromFile("output.txt");
+    }
 }
