@@ -46,6 +46,9 @@ public class Publications{
         return numberOfPages;
     }
 
-
+    @Override
+    public String toString() {
+        return "Title: " + title + ", Pages: " + numberOfPages + ", Size: " + pageSize + ", Type: " + paperType;
+    }
 }
 
