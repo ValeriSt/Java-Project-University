@@ -23,6 +23,9 @@ public class PrintingMachine {
     }
 
     public void loadPaper(int paperAmount) {
+        if (paperAmount <= 0) {
+            throw new IllegalArgumentException("Paper amount must be positive.");
+        }
         if (currentPaperLoad + paperAmount > maxPaperLoad) {
             throw new IllegalArgumentException("The machine cannot hold this much paper.");
         }
@@ -30,6 +33,9 @@ public class PrintingMachine {
     }
 
     public void printPublication(Publications publication, int copies, PrintingMode mode) throws PrintException {
+        if (copies <= 0) {
+            throw new IllegalArgumentException("Number of copies must be positive.");
+        }
         if (!supportsColorPrinting && mode == PrintingMode.COLOR) {
             throw new PrintException("This machine cannot print in color.");
         }
@@ -48,6 +54,10 @@ public class PrintingMachine {
 
     public Map<String, Integer> getPrintedPublications() {
         return printedPublications;
+    }
+
+    public int getCurrentPaperLoad() {
+        return currentPaperLoad;
     }
 
     public String getName() {

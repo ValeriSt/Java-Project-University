@@ -50,5 +50,6 @@ public class Publications{
     public String toString() {
         return "Title: " + title + ", Pages: " + numberOfPages + ", Size: " + pageSize + ", Type: " + paperType;
     }
+
 }
 

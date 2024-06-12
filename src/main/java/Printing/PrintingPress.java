@@ -41,7 +41,7 @@ public class PrintingPress {
             discount = cost * discountRate;
         }
         totalRevenue += (cost - discount);
-        totalCosts += cost;
+        //totalCosts += cost;
         printedPublicationsLog.add("Publication: " + publication + ", Copies: " + copies + ", Revenue: " + (cost - discount));
     }
 
@@ -95,5 +95,8 @@ public class PrintingPress {
         }
     }
 
+   public double getTotalRevenueWithDiscount() {
+       return totalRevenue - (totalRevenue * discountRate);
+   }
 }
 

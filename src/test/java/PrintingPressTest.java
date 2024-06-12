@@ -104,11 +104,31 @@ class PrintingPressTest {
         machine1.loadPaper(10000);
         machine1.printPublication(book, 10, PrintingMode.COLOR);
 
-        press.saveToFile("report.txt");
+        press.saveToFile("test.txt");
 
-        File file = new File("report.txt");
+        File file = new File("test.txt");
         assertTrue(file.exists());
         // Further checks can be done by reading the file content if necessary
         file.delete(); // Clean up the test file
     }
+
+    @Test
+    void testGetTotalRevenueWithDiscount() {
+        PrintingPress press = new PrintingPress(1000, 0.1);
+        Publications book = new Publications("C++ Programming", 300, PageSize.A4, PaperType.REGULAR);
+        press.addPublication(book, 10);
+        double expectedRevenue = 10 * book.getCost();
+        assertEquals(expectedRevenue, press.getTotalRevenue(), 0.001);
+        assertEquals(expectedRevenue * 0.9, press.getTotalRevenueWithDiscount(), 0.001);
+    }
+
+    @Test
+    void testGetTotalCosts() {
+        PrintingPress press = new PrintingPress(1000, 0.1);
+        Publications book = new Publications("C++ Programming", 300, PageSize.A4, PaperType.REGULAR);
+        press.addPublication(book, 10);
+        double expectedCost = 10 * book.getCost();
+        assertEquals(expectedCost, press.getTotalCosts(), 0.001);
+    }
+
 }
